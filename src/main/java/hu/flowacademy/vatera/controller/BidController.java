@@ -16,9 +16,9 @@ public class BidController {
     private BidService bidService;
 
     @CrossOrigin(origins = "http://localhost:4200")
-    @PostMapping("/save")
-    public ResponseEntity<Bid> save(@RequestBody Bid badge) {
-        return ResponseEntity.ok(bidService.save(badge));
+    @PostMapping("/save/{bidownerid}")
+    public ResponseEntity<Bid> save(@RequestBody Bid bid,@PathVariable Integer bidownerid) {
+        return ResponseEntity.ok(bidService.save(bid,bidownerid));
     }
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/getall")
@@ -43,7 +43,7 @@ public class BidController {
     }
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/getorder/{name}")
-    public ResponseEntity<List<Bid>> listByNameOrder(String name) {
+    public ResponseEntity<List<Bid>> listByNameOrder(@PathVariable String name) {
         return ResponseEntity.ok(bidService.listByNameOrder(name));
     }
 

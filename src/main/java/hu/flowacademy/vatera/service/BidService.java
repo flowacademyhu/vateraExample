@@ -24,11 +24,13 @@ public class BidService {
     @Autowired
     private ProductRepository productRepository;
 
-    public Bid save(Bid bid) {
-        if (productRepository.findById(bid.getBidowner().getId()).isEmpty()) {
+    public Bid save(Bid bid,Integer bidownerid) {
+        if (productRepository.findById(bidownerid).isEmpty()) {
             throw new RuntimeException("There is no product with this id");
         }
-        Product product = productRepository.findById(bid.getBidowner().getId()).orElse(null);
+
+        Product product = productRepository.findById(bidownerid).orElse(null);
+        bid.setBidowner(product);
         if (product.getUntil().isBefore(bid.getBidtime())) {
             throw new RuntimeException("Session ended");
 
@@ -45,7 +47,7 @@ public class BidService {
     }
     public Bid update(Bid bid) {
         if (bidRepository.findById(bid.getId()).isEmpty()) {
-            return save(bid);
+            return save(bid,null);
         }
         return bidRepository.save(bid);
     }
